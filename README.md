@@ -173,14 +173,22 @@ A **Flask web application** was built to demonstrate real-world usability.
 
 > This app is a **demonstration prototype**.
 
-<img width="1235" height="643" alt="image" src="https://github.com/user-attachments/assets/10e49791-92dd-4291-b9f0-7747f92393dd" />
+
+> This app is a **demonstration prototype**.
+
+
+<img width="1235" height="643" alt="image" src="https://cdn.discordapp.com/attachments/1203302759890161704/1487946306734522556/image.png?ex=69cafd7c&is=69c9abfc&hm=f85dfdb796957524c40262f56f5f0fe7ea14ddda758ccb619ef94c3ff92d2a57&" />
 
 ---
-<img width="1247" height="937" alt="image" src="https://github.com/user-attachments/assets/5a992adc-fdb7-4ea9-a8ec-893c50467ef0" />
+
+<img width="1247" height="937" alt="image" src="https://cdn.discordapp.com/attachments/1203302759890161704/1487946361033982023/image.png?ex=69cafd89&is=69c9ac09&hm=eb04955fb912bac7a1e9345e9a2b7da3e04fed09c7cd29008dc5133136c44eef&" />
 
 ---
-<img width="1249" height="938" alt="image" src="https://github.com/user-attachments/assets/8df3e580-c175-4b89-ba3b-fddd798f5526" />
 
+<img width="1249" height="938" alt="image" src="https://cdn.discordapp.com/attachments/1203302759890161704/1487946409033334936/image.png?ex=69cafd94&is=69c9ac14&hm=e6b627aa6f5835ff9715219ea80082e2f7c744b70ec0a9ad4b3a317206efb224&" />
+
+---
+#  How to Run ▶️:
 ---
 #  How to Run ▶️:
 
