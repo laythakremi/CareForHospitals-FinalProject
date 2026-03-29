@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+  {% if not_found %}
+    <section class="empty-state">
+      <p class="section-label">State not found</p>
+      <h1>No forecast found for {{ state }}</h1>
+      <p>Return to the home page and choose another state.</p>
+      <a class="button" href="{{ url_for('main.index') }}">Back to home</a>
+    </section>
+  {% else %}
+    <section class="panel state-header tone-{{ data.risk_tone }}">
+      <p class="section-label">State forecast</p>
+      <h1>{{ data.state }}</h1>
+      <p class="lead">Current week: {{ data.current_week_label }} | Forecast week: {{ data.forecast_week_label }}</p>
+      <div class="hero-meta">
+        <span class="pill pill-{{ data.risk_tone }}">{{ data.risk_label }}</span>
+        <span class="meta-chip">Risk probability: {{ data.risk_proba }}</span>
+        {% if data.neighbor %}
+          <span class="meta-chip">Suggested neighbor: {{ data.neighbor }}</span>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="stats-grid">
+      <article class="card">
+        <span class="card-label">ICU forecast</span>
+        <strong>{{ data.icu }}</strong>
+        <p>Expected ICU occupancy next week.</p>
+      </article>
+      <article class="card">
+        <span class="card-label">Inpatient forecast</span>
+        <strong>{{ data.inpatient }}</strong>
+        <p>Expected inpatient occupancy next week.</p>
+      </article>
+      <article class="card">
+        <span class="card-label">Risk probability</span>
+        <strong>{{ data.risk_proba }}</strong>
+        <p>Model probability for critical stress.</p>
+      </article>
+      <article class="card">
+        <span class="card-label">Disease burden</span>
+        <strong>{{ data.disease }}</strong>
+        <p>Expected respiratory burden.</p>
+      </article>
+    </section>
+
+    <section class="details-grid">
+      <article class="panel">
+        <p class="section-label">Recommendation</p>
+        <h2>Suggested action</h2>
+        <p>{{ data.recommendation }}</p>
+      </article>
+
+      <article class="panel">
+        <p class="section-label">Neighbor state</p>
+        <h2>Nearby lower-risk option</h2>
+        {% if neighbor_data %}
+          <p>{{ neighbor_data.state }}</p>
+          <div class="mini-grid">
+            <div><span class="mini-label">Risk</span><strong>{{ neighbor_data.risk_proba }}</strong></div>
+            <div><span class="mini-label">ICU</span><strong>{{ neighbor_data.icu }}</strong></div>
+            <div><span class="mini-label">Inpatient</span><strong>{{ neighbor_data.inpatient }}</strong></div>
+            <div><span class="mini-label">Burden</span><strong>{{ neighbor_data.disease }}</strong></div>
+          </div>
+          <a class="text-link" href="{{ url_for('main.state_page', state=data.neighbor_code) }}">Open {{ neighbor_data.state }}</a>
+        {% else %}
+          <p>No nearby recommendation is available for this state.</p>
+        {% endif %}
+      </article>
+    </section>
+  {% endif %}
+{% endblock %}

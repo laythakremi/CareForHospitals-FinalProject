@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="panel">
+    <p class="section-label">Overview</p>
+    <h1>Hospital forecast dashboard</h1>
+    <p class="lead">
+      View next-week forecasts for ICU occupancy, inpatient occupancy, risk level,
+      and suggested nearby support for each U.S. state.
+    </p>
+
+    <div class="hero-meta">
+      <span class="meta-chip">Current week: {{ summary.current_week }}</span>
+      <span class="meta-chip">Forecast week: {{ summary.forecast_week }}</span>
+    </div>
+  </div>
+
+  <aside class="panel">
+    <p class="section-label">Open state</p>
+    <form class="state-form" method="get" action="{{ url_for('main.index') }}">
+      <label for="state">Choose a state</label>
+      <select name="state" id="state" required>
+        <option value="" selected disabled>Select state</option>
+        {% for code, label in state_options %}
+          <option value="{{ code }}">{{ label }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="button">Open</button>
+    </form>
+    <a class="text-link" href="{{ url_for('main.top_risk') }}">View highest-risk states</a>
+  </aside>
+</section>
+
+<section class="stats-grid">
+  <article class="card">
+    <span class="card-label">States</span>
+    <strong>{{ summary.state_count }}</strong>
+    <p>Total states in the current forecast.</p>
+  </article>
+  <article class="card">
+    <span class="card-label">High risk</span>
+    <strong>{{ summary.critical_count }}</strong>
+    <p>States predicted as critical next week.</p>
+  </article>
+  <article class="card">
+    <span class="card-label">Average ICU</span>
+    <strong>{{ summary.avg_icu }}</strong>
+    <p>Average ICU occupancy forecast.</p>
+  </article>
+  <article class="card">
+    <span class="card-label">Average inpatient</span>
+    <strong>{{ summary.avg_inpatient }}</strong>
+    <p>Average inpatient occupancy forecast.</p>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="section-head">
+    <div>
+      <p class="section-label">States to review first</p>
+      <h2>Priority states</h2>
+    </div>
+    <a class="button button-light" href="{{ url_for('main.top_risk') }}">Open full table</a>
+  </div>
+
+  {% if spotlight %}
+    <div class="spotlight-grid">
+      {% for item in spotlight %}
+        <article class="card state-card tone-{{ item.risk_tone }}">
+          <div class="state-card-head">
+            <a class="state-link" href="{{ url_for('main.state_page', state=item.code) }}">{{ item.state }}</a>
+            <span class="pill pill-{{ item.risk_tone }}">{{ item.risk_label }}</span>
+          </div>
+
+          <div class="mini-grid">
+            <div><span class="mini-label">Risk</span><strong>{{ item.risk_proba }}</strong></div>
+            <div><span class="mini-label">ICU</span><strong>{{ item.icu }}</strong></div>
+            <div><span class="mini-label">Inpatient</span><strong>{{ item.inpatient }}</strong></div>
+            <div><span class="mini-label">Neighbor</span><strong>{{ item.neighbor }}</strong></div>
+          </div>
+
+          <p>{{ item.recommendation }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <h2>No data available</h2>
+      <p>The forecast file loaded, but there are no states to display.</p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

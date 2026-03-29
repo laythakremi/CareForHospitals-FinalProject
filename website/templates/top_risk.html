@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel">
+  <p class="section-label">Top risk</p>
+  <h1>Highest-risk states</h1>
+  <p class="lead">
+    This table shows the states most likely to reach critical hospital stress next week.
+  </p>
+  <div class="hero-meta">
+    <span class="meta-chip">Current week: {{ summary.current_week }}</span>
+    <span class="meta-chip">Forecast week: {{ summary.forecast_week }}</span>
+    <span class="meta-chip">High-risk states: {{ top_risks|length }}</span>
+  </div>
+</section>
+
+{% if top_risks and top_risks|length > 0 %}
+  <section class="panel">
+    <table class="risk-table">
+      <thead>
+        <tr>
+          <th>State</th>
+          <th>ICU</th>
+          <th>Inpatient</th>
+          <th>Risk</th>
+          <th>Status</th>
+          <th>Burden</th>
+          <th>Neighbor</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in top_risks %}
+          <tr>
+            <td data-label="State"><a class="table-link" href="{{ url_for('main.state_page', state=r.state) }}">{{ r.state_label }}</a></td>
+            <td data-label="ICU">{{ r.icu_pct_next_week_pred }}</td>
+            <td data-label="Inpatient">{{ r.inpatient_pct_next_week_pred }}</td>
+            <td data-label="Risk">{{ r.critical_risk_proba }}</td>
+            <td data-label="Status"><span class="pill pill-{{ r.risk_tone }}">{{ r.risk_label }}</span></td>
+            <td data-label="Burden">{{ r.disease_burden_next_week_pred }}</td>
+            <td data-label="Neighbor">
+              {% if r.neighbor_label %}
+                <a class="table-link" href="{{ url_for('main.state_page', state=r.suggested_neighbor_state) }}">{{ r.neighbor_label }}</a>
+              {% else %}
+                <span class="muted">No neighbor</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% else %}
+  <section class="empty-state">
+    <h2>No high-risk states</h2>
+    <p>No state was marked as critical in the current forecast.</p>
+    <a class="button" href="{{ url_for('main.index') }}">Back to home</a>
+  </section>
+{% endif %}
+{% endblock %}

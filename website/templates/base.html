@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ title if title else "Care For Hospitals Dashboard" }}</title>
+  <link rel="icon" href="{{ url_for('static', filename='images/icon.jpg') }}" type="image/jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container topbar">
+      <a class="brand" href="{{ url_for('main.index') }}">
+        <img class="brand-logo" src="{{ url_for('static', filename='images/icon.jpg') }}" alt="Care For Hospitals logo">
+        <div>
+          <div class="brand-title">Care For Hospitals</div>
+          <div class="brand-subtitle">Hospital forecast dashboard</div>
+        </div>
+      </a>
+
+      <nav class="site-nav">
+        <a class="{% if request.endpoint == 'main.index' %}active{% endif %}" href="{{ url_for('main.index') }}">Home</a>
+        <a class="{% if request.endpoint == 'main.top_risk' %}active{% endif %}" href="{{ url_for('main.top_risk') }}">Top Risk</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page-content">
+    {% if missing_cols and missing_cols|length > 0 %}
+      <div class="warn">
+        Some forecast columns are missing: <b>{{ ", ".join(missing_cols) }}</b>.
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <p>Simple dashboard for statewide hospital stress forecasts.</p>
+      <p>Project by <code>Chaima Ben Slima</code></p>
+    </div>
+  </footer>
+</body>
+</html>
